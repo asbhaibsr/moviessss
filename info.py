@@ -22,7 +22,7 @@ ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ
 USERNAME = environ.get('USERNAME', "https://t.me/asbhaibsr") # ADMIN USERNAME
 LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-1002352329534'))
 MOVIE_GROUP_LINK = environ.get('MOVIE_GROUP_LINK', 'https://t.me/all_movies_webseries_is_here')
-CHANNELS = [int(ch) if id_pattern.search(ch) else ch for ch in environ.get('CHANNELS', '-1002797023499').split()]
+CHANNELS = [int(ch) if id_pattern.search(ch) else ch for ch in environ.get('CHANNELS', '-1002797023499 -1002463804038').split()]
 #---------------------------------------------------------------
 #---------------------------------------------------------------
 DATABASE_URI = environ.get('DATABASE_URI', "mongodb+srv://gofej47947_db_user:r9i9hoYTWvZyjS8W@cluster0.j1nxxou.mongodb.net/?retryWrites=true&w=majority&appName=Cluster029970536")
@@ -31,7 +31,7 @@ COLLECTION_NAME = environ.get('COLLECTION_NAME', 'Telegram_files')
 #---------------------------------------------------------------
 #---------------------------------------------------------------
 #----------- There will be channel id add in all these ---------
-LOG_API_CHANNEL = int(environ.get('LOG_API_CHANNEL', '0'))  
+LOG_API_CHANNEL = int(environ.get('LOG_API_CHANNEL', '-1002352329534'))  
 BIN_CHANNEL = int(environ.get('BIN_CHANNEL','0'))
 DELETE_CHANNELS = int(environ.get('DELETE_CHANNELS','0'))
 LOG_VR_CHANNEL = int(environ.get('LOG_VR_CHANNEL', '0'))
@@ -39,7 +39,7 @@ auth_channel = environ.get('AUTH_CHANNEL', '')
 SUPPORT_GROUP = int(environ.get('SUPPORT_GROUP', '-1002085088955'))
 request_channel = environ.get('REQUEST_CHANNEL', '-1002283182645')
 MOVIE_UPDATE_CHANNEL = int(environ.get('MOVIE_UPDATE_CHANNEL', '0'))
-SUPPORT_CHAT = environ.get('SUPPORT_CHAT', 'https://t.me/earntalkchatcash') #Support group link ( make sure bot is admin )
+SUPPORT_CHAT = environ.get('SUPPORT_CHAT', 'https://t.me/aschat_group') #Support group link ( make sure bot is admin )
 #---------------------------------------------------------------
 #---------------------------------------------------------------
 IS_VERIFY = is_enabled('IS_VERIFY', True)
