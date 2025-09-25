@@ -257,9 +257,12 @@ User - {}"""
     
 <blockquote>🎖️ᴀᴠᴀɪʟᴀʙʟᴇ ᴘʀᴇᴍɪᴜᴍ ᴘʟᴀɴꜱ :</blockquote>
 
-! Cut this and Type here Your own plane for exl
 
-1 Month 100 Rupees
+
+‣1 Month 100 Rupees
+‣3 month 300 Rupees
+‣6 month 600 Rupees
+‣And Your Choice Other Plan.
 
  <code> arsadsaifi8272@ibl </code> [ᴛᴀᴘ ᴛᴏ ᴄᴏᴘʏ]
  
@@ -368,3 +371,4 @@ developer : As Bhai Bsr
 ʙʏ /details ᴄᴏᴍᴍᴀɴᴅ
 </blockquote>
 Iғ ʏᴏᴜ ʜᴀᴠᴇ ᴀɴʏ ᴅᴏᴜʙᴛs ᴘʟᴇᴀsᴇ <a href="https://t.me/asbhaibsr">ᴄᴏɴᴛᴀᴄᴛ</a> ᴍʏ <a href="https://t.me/asbhaibsr">ᴀᴅᴍɪɴ</a></b>"""
+
