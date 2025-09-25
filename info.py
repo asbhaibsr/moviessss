@@ -44,8 +44,8 @@ SUPPORT_CHAT = environ.get('SUPPORT_CHAT', 'https://t.me/aschat_group') #Support
 #---------------------------------------------------------------
 IS_VERIFY = is_enabled('IS_VERIFY', True)
 #---------------------------------------------------------------
-TUTORIAL = environ.get("TUTORIAL", "https://t.me/")
-VERIFY_IMG = environ.get("VERIFY_IMG", "https://graph.org/file/1669ab9af68eaa62c3ca4.jpg")
+TUTORIAL = environ.get("TUTORIAL", "https://t.me/asbhai_bsr")
+VERIFY_IMG = environ.get("VERIFY_IMG", "https://envs.sh/GuT.jpg")
 SHORTENER_API = environ.get("SHORTENER_API", "4ca8f20ebd8b02f6fe1f55eb1e49136f69e2f5a0")
 SHORTENER_WEBSITE = environ.get("SHORTENER_WEBSITE", 'dashboard.smallshorts.com')
 SHORTENER_API2 = environ.get("SHORTENER_API2", "3e053189c26ffbc17fec79a7e456beffdebb4314")
