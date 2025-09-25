@@ -38,7 +38,7 @@ LOG_VR_CHANNEL = int(environ.get('LOG_VR_CHANNEL', '-1002352329534'))
 auth_channel = environ.get('AUTH_CHANNEL', '-1002283182645')
 SUPPORT_GROUP = int(environ.get('SUPPORT_GROUP', '-1002085088955'))
 request_channel = environ.get('REQUEST_CHANNEL', '-1002650582272')
-MOVIE_UPDATE_CHANNEL = int(environ.get('MOVIE_UPDATE_CHANNEL', '0'))
+MOVIE_UPDATE_CHANNEL = int(environ.get('MOVIE_UPDATE_CHANNEL', '-1002650582272'))
 SUPPORT_CHAT = environ.get('SUPPORT_CHAT', 'https://t.me/aschat_group') #Support group link ( make sure bot is admin )
 #---------------------------------------------------------------
 #---------------------------------------------------------------
