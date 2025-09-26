@@ -42,7 +42,7 @@ MOVIE_UPDATE_CHANNEL = int(environ.get('MOVIE_UPDATE_CHANNEL', '-1002650582272')
 SUPPORT_CHAT = environ.get('SUPPORT_CHAT', 'https://t.me/aschat_group') #Support group link ( make sure bot is admin )
 #---------------------------------------------------------------
 #---------------------------------------------------------------
-IS_VERIFY = is_enabled('IS_VERIFY', False)
+IS_VERIFY = is_enabled('IS_VERIFY', True)
 #---------------------------------------------------------------
 TUTORIAL = environ.get("TUTORIAL", "https://t.me/asbhai_bsr")
 VERIFY_IMG = environ.get("VERIFY_IMG", "https://envs.sh/GuT.jpg")
@@ -52,8 +52,8 @@ SHORTENER_API2 = environ.get("SHORTENER_API2", "3e053189c26ffbc17fec79a7e456beff
 SHORTENER_WEBSITE2 = environ.get("SHORTENER_WEBSITE2", 'shortxlinks.com')
 SHORTENER_API3 = environ.get("SHORTENER_API3", "0")
 SHORTENER_WEBSITE3 = environ.get("SHORTENER_WEBSITE3", '0')
-TWO_VERIFY_GAP = int(environ.get('TWO_VERIFY_GAP', "18000"))
-THREE_VERIFY_GAP = int(environ.get('THREE_VERIFY_GAP', "18000"))
+TWO_VERIFY_GAP = int(environ.get('TWO_VERIFY_GAP', "8000"))
+THREE_VERIFY_GAP = int(environ.get('THREE_VERIFY_GAP', "8000"))
 #---------------------------------------------------------------
 #---------------------------------------------------------------
 LANGUAGES = ["hindi", "english", "telugu", "tamil", "kannada", "malayalam", "bengali", "marathi", "gujarati", "punjabi"]
