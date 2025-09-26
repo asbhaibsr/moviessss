@@ -113,14 +113,14 @@ User - {}"""
 ⭐ Rating: {rating} / 10</b>
 """
 
-    FILE_CAPTION = """<b>{file_name}\n\n𝖩𝗈𝗂𝗇➥ 「......」</b>"""
+    FILE_CAPTION = """<b> <a href='https://t.me/asbhai_bsr'>{file_name}</a> \n\n𝖩𝗈𝗂𝗇➥ 「@asbhai_bsr @all_movies_webseries_is_here」</b>"""
     
 
     ALRT_TXT = """ᴊᴀʟᴅɪ ʏᴇʜᴀ sᴇ ʜᴀᴛᴏ !"""
 
     OLD_ALRT_TXT = """ʏᴏᴜ ᴀʀᴇ ᴜsɪɴɢ ᴍʏ ᴏʟᴅ ᴍᴇssᴀɢᴇs..sᴇɴᴅ ᴀ ɴᴇᴡ ʀᴇǫᴜᴇsᴛ.."""
 
-    NO_RESULT_TXT = """<b>ᴛʜɪs ᴍᴇssᴀɢᴇ ɪs ɴᴏᴛ ʀᴇʟᴇᴀsᴇᴅ ᴏʀ ᴀᴅᴅᴇᴅ ɪɴ ᴍʏ ᴅᴀᴛᴀʙᴀsᴇ 🙄</b>"""
+    NO_RESULT_TXT = """<b>ɪғ ᴛʜᴇ ᴍᴇssᴀɢᴇ ʏᴏᴜ sᴇɴᴛ ɪs ɴᴏᴛ ʏᴇᴛ ɪɴ ᴏᴜʀ ᴅᴀᴛᴀʙᴀsᴇ ᴏʀ ɪᴛ ʜᴀs ɴᴏᴛ ʙᴇᴇɴ ʀᴇʟᴇᴀsᴇᴅ ʏᴇᴛ, ʏᴏᴜ ᴄᴀɴ ʀᴇǫᴜᴇsᴛ ᴏᴜʀ ᴀᴅᴍɪɴ ʟɪᴋᴇ ᴛʜɪs - #ʀᴇǫᴜᴇsᴛ (ᴍᴏᴠɪᴇ/ᴡᴇʙsᴇʀɪᴇs ɴᴀᴍᴇ) 🙄</b>"""
     
     I_CUDNT = """🤧 𝗛𝗲𝗹𝗹𝗼 {}
 
@@ -257,14 +257,12 @@ User - {}"""
     
 <blockquote>🎖️ᴀᴠᴀɪʟᴀʙʟᴇ ᴘʀᴇᴍɪᴜᴍ ᴘʟᴀɴꜱ :</blockquote>
 
-
-
 ‣1 Month 100 Rupees
 ‣3 month 300 Rupees
 ‣6 month 600 Rupees
 ‣And Your Choice Other Plan.
 
- <code> arsadsaifi8272@ibl </code> [ᴛᴀᴘ ᴛᴏ ᴄᴏᴘʏ]
+<code> arsadsaifi8272@ibl </code> [ᴛᴀᴘ ᴛᴏ ᴄᴏᴘʏ]
  
 ⛽️ ᴄʜᴇᴄᴋ ʏᴏᴜʀ ᴀᴄᴛɪᴠᴇ ᴘʟᴀɴ: /myplan
 
@@ -371,4 +369,5 @@ developer : As Bhai Bsr
 ʙʏ /details ᴄᴏᴍᴍᴀɴᴅ
 </blockquote>
 Iғ ʏᴏᴜ ʜᴀᴠᴇ ᴀɴʏ ᴅᴏᴜʙᴛs ᴘʟᴇᴀsᴇ <a href="https://t.me/asbhaibsr">ᴄᴏɴᴛᴀᴄᴛ</a> ᴍʏ <a href="https://t.me/asbhaibsr">ᴀᴅᴍɪɴ</a></b>"""
+
 
