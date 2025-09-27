@@ -767,74 +767,71 @@ async def cb_handler(client: Client, query: CallbackQuery):
             await client.send_message(LOG_CHANNEL, text=f"#FREE_TRAIL_CLAIMED\n\n👤 ᴜꜱᴇʀ ɴᴀᴍᴇ - {query.from_user.mention}\n⚡ ᴜꜱᴇʀ ɪᴅ - {user_id}", disable_web_page_preview=True)
             return   
 	
-    elif query.data.startswith("stream"):
-        user_id = query.from_user.id
+        elif query.data.startswith("stream"):
+            user_id = query.from_user.id
     
-    # 🌟 प्रीमियम एक्सेस चेक 🌟
-        has_access = await db.has_premium_access(user_id)
+            has_access = await db.has_premium_access(user_id)
     
         if not has_access:
-        # अगर प्रीमियम नहीं है, तो उपयोगकर्ता को बेहतर मैसेज दें।
-            premium_required_message = (
-            "👑 **प्रीमियम सदस्यता आवश्यक** 👑\n\n"
-            "क्षमा करें! यह सुविधा (ऑनलाइन देखना और फ़ास्ट डाउनलोड) केवल हमारे **प्रीमियम यूज़र्स** के लिए उपलब्ध है।\n\n"
-            "🔥 **प्रीमियम लेने के लिए:**\n"
-            "आप `/plan` कमांड का उपयोग कर सकते हैं या नीचे दिए गए बटन पर क्लिक करें।"
-        )
-        
-        # 'seeplans' callback_data के साथ बटन
-            plan_btn = [[
-            InlineKeyboardButton("✨ प्रीमियम प्लान देखें ✨", callback_data='seeplans') 
-        ]]
-        
-        # 1. पहले एक पॉपअप अलर्ट दिखाएँ
-        await query.answer(
-            text=premium_required_message, 
-            show_alert=True
-        )
-        
-        # 2. फिर मैसेज को Edit करें ताकि उसमें 'Plan' बटन दिखाई दे।
-        try:
-            # यह मानते हुए कि query.message पहले से ही एक मैसेज है जिसे आप एडिट करना चाहते हैं
-            await query.edit_message_reply_markup(
-                reply_markup=InlineKeyboardMarkup(plan_btn)
+                premium_required_message = (
+                "👑 **प्रीमियम सदस्यता आवश्यक** 👑\n\n"
+                "क्षमा करें! यह सुविधा (ऑनलाइन देखना और फ़ास्ट डाउनलोड) केवल हमारे **प्रीमियम यूज़र्स** के लिए उपलब्ध है।\n\n"
+                "🔥 **प्रीमियम लेने के लिए:**\n"
+                "आप `/plan` कमांड का उपयोग कर सकते हैं या नीचे दिए गए बटन पर क्लिक करें।"
             )
-        except Exception:
-            # अगर मैसेज एडिट नहीं हो पाता है, तो कोई बात नहीं।
-            pass
             
-        return  # आगे की लिंक जनरेशन प्रक्रिया को रोकें
+                plan_btn = [[
+                InlineKeyboardButton("✨ प्रीमियम प्लान देखें ✨", callback_data='seeplans') 
+            ]]
+            
+            await query.answer(
+                text=premium_required_message, 
+                show_alert=True
+            )
+            
+            # यहाँ, संदेश को टेक्स्ट और बटन दोनों के साथ एडिट करें।
+            try:
+                await query.message.edit_text(
+                    text=premium_required_message, # नए टेक्स्ट के साथ संदेश अपडेट करें
+                    reply_markup=InlineKeyboardMarkup(plan_btn),
+                    parse_mode=enums.ParseMode.MARKDOWN # यदि आप बोल्ड/इमोजी का उपयोग कर रहे हैं तो इसे पार्स करें
+                )
+            except Exception as e:
+                # त्रुटि लॉग करें यदि संदेश एडिट नहीं हो पाता है।
+                print(f"Error editing message for non-premium user: {e}")
+            
+            return # अब `return` यहाँ ठीक है, क्योंकि संदेश अपडेट हो चुका है।
 
-    # अगर प्रीमियम एक्सेस है (has_access = True), तो लिंक जनरेट करें
-        file_id = query.data.split('#', 1)[1]
-        log_msg = await client.send_cached_media(
-        chat_id=LOG_CHANNEL,
-        file_id=file_id
-    )
-        fileName = quote_plus(get_name(log_msg))
-        online = f"{URL}watch/{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
-        download = f"{URL}{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
-        btn = [[
-        InlineKeyboardButton("ᴡᴀᴛᴄʜ ᴏɴʟɪɴᴇ", url=online),
-        InlineKeyboardButton("ꜰᴀsᴛ ᴅᴏᴡɴʟᴏᴀᴅ", url=download)
-    ],[
-        InlineKeyboardButton('❌ ᴄʟᴏsᴇ ❌', callback_data='close_data')
-    ]]
+        # अगर प्रीमियम एक्सेस है (has_access = True), तो लिंक जनरेट करें
+            file_id = query.data.split('#', 1)[1]
+            log_msg = await client.send_cached_media(
+            chat_id=LOG_CHANNEL,
+            file_id=file_id
+        )
+            fileName = quote_plus(get_name(log_msg))
+            online = f"{URL}watch/{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
+            download = f"{URL}{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
+            btn = [[
+            InlineKeyboardButton("ᴡᴀᴛᴄʜ ᴏɴʟɪɴᴇ", url=online),
+            InlineKeyboardButton("ꜰᴀsᴛ ᴅᴏᴡɴʟᴏᴀᴅ", url=download)
+        ],[
+            InlineKeyboardButton('❌ ᴄʟᴏsᴇ ❌', callback_data='close_data')
+        ]]
         await query.edit_message_reply_markup(
-        reply_markup=InlineKeyboardMarkup(btn)
-    )
-        username = query.from_user.username
+            reply_markup=InlineKeyboardMarkup(btn)
+        )
+            username = query.from_user.username
         await log_msg.reply_text(
-        text=f"#LinkGenrated\n\nIᴅ : <code>{user_id}</code>\nUꜱᴇʀɴᴀᴍᴇ : {username}\n\nNᴀᴍᴇ : {fileName}",
-        quote=True,
-        disable_web_page_preview=True,
-        reply_markup=InlineKeyboardMarkup([
-            [
-                InlineKeyboardButton("🚀 ꜰᴀꜱᴛ ᴅᴏᴡɴʟᴏᴀᴅ", url=download),
-                InlineKeyboardButton('ᴡᴀᴛᴄʜ ᴏɴʟᴀɪɴ 🧿', url=online)
-            ]
-        ])
-    )
+            text=f"#LinkGenrated\n\nIᴅ : <code>{user_id}</code>\nUꜱᴇʀɴᴀᴍᴇ : {username}\n\nNᴀᴍᴇ : {fileName}",
+            quote=True,
+            disable_web_page_preview=True,
+            reply_markup=InlineKeyboardMarkup([
+                [
+                    InlineKeyboardButton("🚀 ꜰᴀꜱᴛ ᴅᴏᴡɴʟᴏᴀᴅ", url=download),
+                    InlineKeyboardButton('ᴡᴀᴛᴄʜ ᴏɴʟᴀɪɴ 🧿', url=online)
+                ]
+            ])
+        )
 	
     elif query.data == "buttons":
         await query.answer("ɴᴏ ᴍᴏʀᴇ ᴘᴀɢᴇs 😊", show_alert=True)
@@ -1697,6 +1694,7 @@ async def advantage_spell_chok(message):
         await message.delete()
     except:
         pass
+
 
 
 
