@@ -768,35 +768,71 @@ async def cb_handler(client: Client, query: CallbackQuery):
             return   
 	
     elif query.data.startswith("stream"):
-        user_id = query.from_user.id
-        file_id = query.data.split('#', 1)[1]
-        log_msg = await client.send_cached_media(
-        chat_id=LOG_CHANNEL,
-        file_id=file_id
+    user_id = query.from_user.id
+    
+    # 🌟 प्रीमियम एक्सेस चेक 🌟
+    has_access = await db.has_premium_access(user_id)
+    
+    if not has_access:
+        # अगर प्रीमियम नहीं है, तो उपयोगकर्ता को बेहतर मैसेज दें।
+        premium_required_message = (
+            "👑 **प्रीमियम सदस्यता आवश्यक** 👑\n\n"
+            "क्षमा करें! यह सुविधा (ऑनलाइन देखना और फ़ास्ट डाउनलोड) केवल हमारे **प्रीमियम यूज़र्स** के लिए उपलब्ध है।\n\n"
+            "🔥 **प्रीमियम लेने के लिए:**\n"
+            "आप `/plan` कमांड का उपयोग कर सकते हैं या नीचे दिए गए बटन पर क्लिक करें।"
         )
-        fileName = quote_plus(get_name(log_msg))
-        online = f"{URL}watch/{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
-        download = f"{URL}{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
-        btn = [[
-            InlineKeyboardButton("ᴡᴀᴛᴄʜ ᴏɴʟɪɴᴇ", url=online),
-            InlineKeyboardButton("ꜰᴀsᴛ ᴅᴏᴡɴʟᴏᴀᴅ", url=download)
-        ],[
-            InlineKeyboardButton('❌ ᴄʟᴏsᴇ ❌', callback_data='close_data')
+        
+        # 'seeplans' callback_data के साथ बटन
+        plan_btn = [[
+            InlineKeyboardButton("✨ प्रीमियम प्लान देखें ✨", callback_data='seeplans') 
+        ]]
+        
+        # 1. पहले एक पॉपअप अलर्ट दिखाएँ
+        await query.answer(
+            text=premium_required_message, 
+            show_alert=True
+        )
+        
+        # 2. फिर मैसेज को Edit करें ताकि उसमें 'Plan' बटन दिखाई दे।
+        try:
+             await query.edit_message_reply_markup(
+                reply_markup=InlineKeyboardMarkup(plan_btn)
+            )
+        except Exception:
+            # अगर मैसेज एडिट नहीं हो पाता है, तो कोई बात नहीं।
+            pass
+            
+        return  # आगे की लिंक जनरेशन प्रक्रिया को रोकें
+
+    # अगर प्रीमियम एक्सेस है (has_access = True), तो लिंक जनरेट करें (पुराना कोड जारी रहेगा)
+    file_id = query.data.split('#', 1)[1]
+    log_msg = await client.send_cached_media(
+    chat_id=LOG_CHANNEL,
+    file_id=file_id
+    )
+    fileName = quote_plus(get_name(log_msg))
+    online = f"{URL}watch/{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
+    download = f"{URL}{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
+    btn = [[
+        InlineKeyboardButton("ᴡᴀᴛᴄʜ ᴏɴʟɪɴᴇ", url=online),
+        InlineKeyboardButton("ꜰᴀsᴛ ᴅᴏᴡɴʟᴏᴀᴅ", url=download)
+    ],[
+        InlineKeyboardButton('❌ ᴄʟᴏsᴇ ❌', callback_data='close_data')
 	]]
-        await query.edit_message_reply_markup(
-        reply_markup=InlineKeyboardMarkup(btn)
+    await query.edit_message_reply_markup(
+    reply_markup=InlineKeyboardMarkup(btn)
 	)
-        username = query.from_user.username
-        await log_msg.reply_text(
-            text=f"#LinkGenrated\n\nIᴅ : <code>{user_id}</code>\nUꜱᴇʀɴᴀᴍᴇ : {username}\n\nNᴀᴍᴇ : {fileName}",
-            quote=True,
-            disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup([
-                [
-                    InlineKeyboardButton("🚀 ꜰᴀꜱᴛ ᴅᴏᴡɴʟᴏᴀᴅ", url=download),
-                    InlineKeyboardButton('ᴡᴀᴛᴄʜ ᴏɴʟɪɴᴇ 🧿', url=online)
-                ]
-            ])
+    username = query.from_user.username
+    await log_msg.reply_text(
+        text=f"#LinkGenrated\n\nIᴅ : <code>{user_id}</code>\nUꜱᴇʀɴᴀᴍᴇ : {username}\n\nNᴀᴍᴇ : {fileName}",
+        quote=True,
+        disable_web_page_preview=True,
+        reply_markup=InlineKeyboardMarkup([
+            [
+                InlineKeyboardButton("🚀 ꜰᴀꜱᴛ ᴅᴏᴡɴʟᴏᴀᴅ", url=download),
+                InlineKeyboardButton('ᴡᴀᴛᴄʜ ᴏɴʟᴀɪɴ 🧿', url=online)
+            ]
+        ])
 	)
 	
     elif query.data == "buttons":
@@ -1660,3 +1696,4 @@ async def advantage_spell_chok(message):
         await message.delete()
     except:
         pass
+
