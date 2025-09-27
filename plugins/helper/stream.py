@@ -1,10 +1,10 @@
 from pyrogram import Client, filters, enums
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ForceReply, CallbackQuery
 from info import URL, LOG_CHANNEL
-# --- ZAROORI IMPORTS YAHAN ADD KIYE GAYE HAIN ---
-from users_chats_db import db 
+# --- YAHAN BADLAV KIYA GAYA HAI ---
+from database.users_chats_db import db # <-- Ab 'database' folder ka naam add kiya gaya hai
 from Script import script 
-# ------------------------------------------------
+# ----------------------------------
 from urllib.parse import quote_plus
 from Jisshu.util.file_properties import get_name, get_hash, get_media_file_size
 from Jisshu.util.human_readable import humanbytes
@@ -17,9 +17,7 @@ async def stream_start(client, message):
     
     # --- PREMIUM CHECK LOGIC START ---
     
-    # Database se check karein ki user premium hai ya nahi
     if not await db.has_premium_access(user_id):
-        # Agar user premium nahi hai, toh use mana kar dein aur aage ka code rok dein
         return await message.reply_text(
             text=script.PREMIUM_REQUIRED_TXT, 
             quote=True
@@ -27,7 +25,6 @@ async def stream_start(client, message):
     
     # --- PREMIUM CHECK LOGIC END ---
     
-    # Agar user premium hai, toh woh yahan se aage badhega aur link generate hoga
     msg = await client.ask(message.chat.id, "**Now send me your file/video to get stream and download link**")
     
     if not msg.media:
