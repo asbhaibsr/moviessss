@@ -795,7 +795,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
         
         # 2. फिर मैसेज को Edit करें ताकि उसमें 'Plan' बटन दिखाई दे।
         try:
-             await query.edit_message_reply_markup(
+            # यह मानते हुए कि query.message पहले से ही एक मैसेज है जिसे आप एडिट करना चाहते हैं
+            await query.edit_message_reply_markup(
                 reply_markup=InlineKeyboardMarkup(plan_btn)
             )
         except Exception:
@@ -804,11 +805,11 @@ async def cb_handler(client: Client, query: CallbackQuery):
             
         return  # आगे की लिंक जनरेशन प्रक्रिया को रोकें
 
-    # अगर प्रीमियम एक्सेस है (has_access = True), तो लिंक जनरेट करें (पुराना कोड जारी रहेगा)
+    # अगर प्रीमियम एक्सेस है (has_access = True), तो लिंक जनरेट करें
     file_id = query.data.split('#', 1)[1]
     log_msg = await client.send_cached_media(
-    chat_id=LOG_CHANNEL,
-    file_id=file_id
+        chat_id=LOG_CHANNEL,
+        file_id=file_id
     )
     fileName = quote_plus(get_name(log_msg))
     online = f"{URL}watch/{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
@@ -818,10 +819,10 @@ async def cb_handler(client: Client, query: CallbackQuery):
         InlineKeyboardButton("ꜰᴀsᴛ ᴅᴏᴡɴʟᴏᴀᴅ", url=download)
     ],[
         InlineKeyboardButton('❌ ᴄʟᴏsᴇ ❌', callback_data='close_data')
-	]]
+    ]]
     await query.edit_message_reply_markup(
-    reply_markup=InlineKeyboardMarkup(btn)
-	)
+        reply_markup=InlineKeyboardMarkup(btn)
+    )
     username = query.from_user.username
     await log_msg.reply_text(
         text=f"#LinkGenrated\n\nIᴅ : <code>{user_id}</code>\nUꜱᴇʀɴᴀᴍᴇ : {username}\n\nNᴀᴍᴇ : {fileName}",
@@ -833,7 +834,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 InlineKeyboardButton('ᴡᴀᴛᴄʜ ᴏɴʟᴀɪɴ 🧿', url=online)
             ]
         ])
-	)
+    )
 	
     elif query.data == "buttons":
         await query.answer("ɴᴏ ᴍᴏʀᴇ ᴘᴀɢᴇs 😊", show_alert=True)
@@ -1696,4 +1697,5 @@ async def advantage_spell_chok(message):
         await message.delete()
     except:
         pass
+
 
