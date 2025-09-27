@@ -767,34 +767,34 @@ async def cb_handler(client: Client, query: CallbackQuery):
             await client.send_message(LOG_CHANNEL, text=f"#FREE_TRAIL_CLAIMED\n\n👤 ᴜꜱᴇʀ ɴᴀᴍᴇ - {query.from_user.mention}\n⚡ ᴜꜱᴇʀ ɪᴅ - {user_id}", disable_web_page_preview=True)
             return   
 	
-        elif query.data.startswith("stream"):
-            user_id = query.from_user.id
+    elif query.data.startswith("stream"):
+        user_id = query.from_user.id
     
-            has_access = await db.has_premium_access(user_id)
+        has_access = await db.has_premium_access(user_id)
     
         if not has_access:
-                premium_required_message = (
-                "👑 **प्रीमियम सदस्यता आवश्यक** 👑\n\n"
-                "क्षमा करें! यह सुविधा (ऑनलाइन देखना और फ़ास्ट डाउनलोड) केवल हमारे **प्रीमियम यूज़र्स** के लिए उपलब्ध है।\n\n"
-                "🔥 **प्रीमियम लेने के लिए:**\n"
-                "आप `/plan` कमांड का उपयोग कर सकते हैं या नीचे दिए गए बटन पर क्लिक करें।"
+            premium_required_message = (
+            "👑 **प्रीमियम सदस्यता आवश्यक** 👑\n\n"
+            "क्षमा करें! यह सुविधा (ऑनलाइन देखना और फ़ास्ट डाउनलोड) केवल हमारे **प्रीमियम यूज़र्स** के लिए उपलब्ध है।\n\n"
+            "🔥 **प्रीमियम लेने के लिए:**\n"
+            "आप `/plan` कमांड का उपयोग कर सकते हैं या नीचे दिए गए बटन पर क्लिक करें।"
             )
             
-                plan_btn = [[
-                InlineKeyboardButton("✨ प्रीमियम प्लान देखें ✨", callback_data='seeplans') 
+            plan_btn = [[
+            InlineKeyboardButton("✨ प्रीमियम प्लान देखें ✨", callback_data='seeplans') 
             ]]
             
-            await query.answer(
-                text=premium_required_message, 
-                show_alert=True
+        await query.answer(
+            text=premium_required_message, 
+            show_alert=True
             )
             
             # यहाँ, संदेश को टेक्स्ट और बटन दोनों के साथ एडिट करें।
             try:
-                await query.message.edit_text(
-                    text=premium_required_message, # नए टेक्स्ट के साथ संदेश अपडेट करें
-                    reply_markup=InlineKeyboardMarkup(plan_btn),
-                    parse_mode=enums.ParseMode.MARKDOWN # यदि आप बोल्ड/इमोजी का उपयोग कर रहे हैं तो इसे पार्स करें
+        await query.message.edit_text(
+            text=premium_required_message, # नए टेक्स्ट के साथ संदेश अपडेट करें
+            reply_markup=InlineKeyboardMarkup(plan_btn),
+            parse_mode=enums.ParseMode.MARKDOWN # यदि आप बोल्ड/इमोजी का उपयोग कर रहे हैं तो इसे पार्स करें
                 )
             except Exception as e:
                 # त्रुटि लॉग करें यदि संदेश एडिट नहीं हो पाता है।
@@ -1694,6 +1694,7 @@ async def advantage_spell_chok(message):
         await message.delete()
     except:
         pass
+
 
 
 
