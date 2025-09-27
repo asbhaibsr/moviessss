@@ -790,7 +790,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
             )
             
             # यहाँ, संदेश को टेक्स्ट और बटन दोनों के साथ एडिट करें।
-                try:
+    try:
         await query.message.edit_text(
             text=premium_required_message, # नए टेक्स्ट के साथ संदेश अपडेट करें
             reply_markup=InlineKeyboardMarkup(plan_btn),
@@ -1694,6 +1694,7 @@ async def advantage_spell_chok(message):
         await message.delete()
     except:
         pass
+
 
 
 
