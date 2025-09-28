@@ -768,7 +768,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
             return   
 	
     elif query.data.startswith("stream"):
-    user_id = query.from_user.id
+    	user_id = query.from_user.id
     
     # Premium check - yahan add karen
     if not await db.has_premium_access(user_id):
@@ -1666,5 +1666,6 @@ async def advantage_spell_chok(message):
         await message.delete()
     except:
         pass
+
 
 
