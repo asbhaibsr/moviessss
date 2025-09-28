@@ -768,36 +768,42 @@ async def cb_handler(client: Client, query: CallbackQuery):
             return   
 	
     elif query.data.startswith("stream"):
-        user_id = query.from_user.id
-        file_id = query.data.split('#', 1)[1]
-        log_msg = await client.send_cached_media(
-        chat_id=LOG_CHANNEL,
-        file_id=file_id
-        )
-        fileName = quote_plus(get_name(log_msg))
-        online = f"{URL}watch/{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
-        download = f"{URL}{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
-        btn = [[
-            InlineKeyboardButton("ᴡᴀᴛᴄʜ ᴏɴʟɪɴᴇ", url=online),
-            InlineKeyboardButton("ꜰᴀsᴛ ᴅᴏᴡɴʟᴏᴀᴅ", url=download)
-        ],[
-            InlineKeyboardButton('❌ ᴄʟᴏsᴇ ❌', callback_data='close_data')
-	]]
-        await query.edit_message_reply_markup(
-        reply_markup=InlineKeyboardMarkup(btn)
-	)
-        username = query.from_user.username
-        await log_msg.reply_text(
-            text=f"#LinkGenrated\n\nIᴅ : <code>{user_id}</code>\nUꜱᴇʀɴᴀᴍᴇ : {username}\n\nNᴀᴍᴇ : {fileName}",
-            quote=True,
-            disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup([
-                [
-                    InlineKeyboardButton("🚀 ꜰᴀꜱᴛ ᴅᴏᴡɴʟᴏᴀᴅ", url=download),
-                    InlineKeyboardButton('ᴡᴀᴛᴄʜ ᴏɴʟɪɴᴇ 🧿', url=online)
-                ]
-            ])
-	)
+    	user_id = query.from_user.id
+    
+    # Premium check - yahan add karen
+    	if not await db.has_premium_access(user_id):
+        	await query.answer("🚫 Premium Required!\n\nAap ye facility ka use nahi kar sakte. Premium lene ke liye yahan click karen - /plan", show_alert=True)
+        	return
+    
+    		file_id = query.data.split('#', 1)[1]
+    		log_msg = await client.send_cached_media(
+        	chat_id=LOG_CHANNEL,
+        	file_id=file_id
+    )
+    		fileName = quote_plus(get_name(log_msg))
+    		online = f"{URL}watch/{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
+    		download = f"{URL}{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
+    		btn = [[
+        	InlineKeyboardButton("ᴡᴀᴛᴄʜ ᴏɴʟɪɴᴇ", url=online),
+        	InlineKeyboardButton("ꜰᴀsᴛ ᴅᴏᴡɴʟᴏᴀᴅ", url=download)
+    ],[
+        	InlineKeyboardButton('❌ ᴄʟᴏsᴇ ❌', callback_data='close_data')
+    ]]
+    await query.edit_message_reply_markup(
+    reply_markup=InlineKeyboardMarkup(btn)
+    )
+    username = query.from_user.username
+    await log_msg.reply_text(
+        text=f"#LinkGenrated\n\nIᴅ : <code>{user_id}</code>\nUꜱᴇʀɴᴀᴍᴇ : {username}\n\nNᴀᴍᴇ : {fileName}",
+        quote=True,
+        disable_web_page_preview=True,
+        reply_markup=InlineKeyboardMarkup([
+            [
+                InlineKeyboardButton("🚀 ꜰᴀꜱᴛ ᴅᴏᴡɴʟᴏᴀᴅ", url=download),
+                InlineKeyboardButton('ᴡᴀᴛᴄʜ ᴏɴʟɪɴᴇ 🧿', url=online)
+            ]
+        ])
+    )
 	
     elif query.data == "buttons":
         await query.answer("ɴᴏ ᴍᴏʀᴇ ᴘᴀɢᴇs 😊", show_alert=True)
@@ -1660,3 +1666,4 @@ async def advantage_spell_chok(message):
         await message.delete()
     except:
         pass
+
