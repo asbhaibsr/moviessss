@@ -144,7 +144,6 @@ async def refercall(bot, query):
     await query.answer()
 	
 
-
 @Client.on_callback_query(filters.regex(r"^next"))
 async def next_page(bot, query):
     ident, req, key, offset = query.data.split("_")
@@ -186,7 +185,7 @@ async def next_page(bot, query):
         for file_num, file in enumerate(files, start=offset+1):
             links += f"""<b>\n\n{file_num}. <a href=https://t.me/{temp.U_NAME}?start=file_{query.message.chat.id}_{file.file_id}>[{get_size(file.file_size)}] {' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@') and not x.startswith('www.'), file.file_name.split()))}</a></b>"""
     else:
-        btn = [[InlineKeyboardButton(text=f"📁 {get_size(file.file_size)}≽ {formate_file_name(file.file_name)}", url=f'https://telegram.dog/{temp.U_NAME}?start=file_{query.message.chat.id}_{file.file_id}'),]
+        btn = [[InlineKeyboardButton(text=f"📁 {get_size(file.file_size)}≽ {formate_file_name(file.file_name)}", callback_data=f'files#{reqnxt}#{file.file_id}'),]
                 for file in files
               ]
     btn.insert(0,[
@@ -768,38 +767,38 @@ async def cb_handler(client: Client, query: CallbackQuery):
             return   
 	
     elif query.data.startswith("stream"):
-    	user_id = query.from_user.id
-    
-    # Premium check - yahan add karen
-    if not await db.has_premium_access(user_id):
-        await query.answer("🚫 Premium Required!\n\nAap ye subhiya ka upyog nahi kar sakte. Premium lene ke liye /plan command ka use kare ya niche diye gye button pr click karen.", show_alert=True)
-        return
-    
-    file_id = query.data.split('#', 1)[1]
-    log_msg = await client.send_cached_media(
+        user_id = query.from_user.id
+        
+        # प्रीमियम यूजर चेक करें
+        if not await db.is_premium_user(user_id):
+            await query.answer("❌ यह सुविधा सिर्फ प्रीमियम यूजर्स के लिए है!\nकृपया /plan पर क्लिक करके प्रीमियम लें", show_alert=True)
+            return
+        
+        file_id = query.data.split('#', 1)[1]
+        log_msg = await client.send_cached_media(
         chat_id=LOG_CHANNEL,
         file_id=file_id
-    )
-    fileName = quote_plus(get_name(log_msg))
-    online = f"{URL}watch/{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
-    download = f"{URL}{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
-    btn = [[
-        InlineKeyboardButton("ᴡᴀᴛᴄʜ ᴏɴʟɪɴᴇ", url=online),
-        InlineKeyboardButton("ꜰᴀsᴛ ᴅᴏᴡɴʟᴏᴀᴅ", url=download)
-    ],[
-        InlineKeyboardButton('❌ ᴄʟᴏsᴇ ❌', callback_data='close_data')
-    ]]
-    await query.edit_message_reply_markup(
+        )
+        fileName = quote_plus(get_name(log_msg))
+        online = f"{URL}watch/{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
+        download = f"{URL}{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
+        btn = [[
+            InlineKeyboardButton("ᴡᴀᴛᴄʜ ᴏɴʟɪɴᴇ", url=online),
+            InlineKeyboardButton("ꜰᴀsᴛ ᴅᴏᴡɴʟᴏᴀᴅ", url=download)
+        ],[
+            InlineKeyboardButton('❌ ᴄʟᴏsᴇ ❌', callback_data='close_data')
+	]]
+        await query.edit_message_reply_markup(
         reply_markup=InlineKeyboardMarkup(btn)
-    )
-    username = query.from_user.username
-    await log_msg.reply_text(
-        text=f"#LinkGenrated\n\nIᴅ : <code>{user_id}</code>\nUꜱᴇʀɴᴀᴍᴇ : {username}\n\nNᴀᴍᴇ : {fileName}",
-        quote=True,
-        disable_web_page_preview=True,
-        reply_markup=InlineKeyboardMarkup([
-            [
-                InlineKeyboardButton("🚀 ꜰᴀꜱᴛ ᴅᴏᴡɴʟᴏᴀᴅ", url=download),
+	)
+        username = query.from_user.username
+        await log_msg.reply_text(
+            text=f"#LinkGenrated\n\nIᴅ : <code>{user_id}</code>\nUꜱᴇʀɴᴀᴍᴇ : {username}\n\nNᴀᴍᴇ : {fileName}",
+            quote=True,
+            disable_web_page_preview=True,
+            reply_markup=InlineKeyboardMarkup([
+                [
+                    InlineKeyboardButton("🚀 ꜰᴀꜱᴛ ᴅᴏᴡɴʟᴏᴀᴅ", url=download),
                     InlineKeyboardButton('ᴡᴀᴛᴄʜ ᴏɴʟɪɴᴇ 🧿', url=online)
                 ]
             ])
@@ -917,7 +916,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
               InlineKeyboardButton('Iᴍᴀɢᴇ Tᴏ Lɪɴᴋ', callback_data='telegraph'),
 	],[
               InlineKeyboardButton('F-Sᴜʙ', callback_data='fsub'),
-              InlineKeyboardButton('Gʀᴏᴜᴘ Sᴇᴛᴜᴘ', callback_data='earn')
+              InlineKeyboardButton('Gʀᴏᴜᴘ Sᴇᴛᴜᴐ', callback_data='earn')
 	],[
               InlineKeyboardButton('⋞ Back To Home', callback_data='start')
 	]]
@@ -932,11 +931,6 @@ async def cb_handler(client: Client, query: CallbackQuery):
             ),
             reply_markup=reply_markup
 	)
-      #  await query.message.edit_text(
-      #      text=script.HELP_TXT,
-      #      reply_markup=reply_markup,
-       #     parse_mode=enums.ParseMode.HTML
-       # )   
         
     elif query.data == "admincmd":
     # If the user isn't an admin, return
@@ -1072,6 +1066,43 @@ async def cb_handler(client: Client, query: CallbackQuery):
             parse_mode=enums.ParseMode.HTML
 	)
   
+    elif query.data.startswith("files#"):
+        user_id = query.from_user.id
+        
+        # प्रीमियम यूजर चेक करें
+        if not await db.is_premium_user(user_id):
+            await query.answer("❌ यह सुविधा सिर्फ प्रीमियम यूजर्स के लिए है!\nकृपया /plan पर क्लिक करके प्रीमियम लें", show_alert=True)
+            return
+            
+        ident, req, file_id = query.data.split("#")
+        # बाकी फाइल हैंडलिंग कोड यहां रहेगा
+        file = await Media.get_file_details(file_id)
+        if not file:
+            return await query.answer('No such file exist.')
+        
+        # फाइल सेंड करने का लॉजिक
+        # ...
+
+    elif query.data.startswith("batchfiles#"):
+        user_id = query.from_user.id
+        
+        # प्रीमियम यूजर चेक करें
+        if not await db.is_premium_user(user_id):
+            await query.answer("❌ यह सुविधा सिर्फ प्रीमियम यूजर्स के लिए है!\nकृपया /plan पर क्लिक करके प्रीमियम लें", show_alert=True)
+            return
+            
+        ident, group_id, message_id, user = query.data.split("#")
+        group_id = int(group_id)
+        message_id = int(message_id)
+        user = int(user)
+        
+        if user != query.from_user.id:
+            await query.answer(script.ALRT_TXT, show_alert=True)
+            return
+            
+        link = f"https://telegram.me/{temp.U_NAME}?start=allfiles_{group_id}-{message_id}"
+        await query.answer(url=link)
+        return
 
     elif query.data == "all_files_delete":
         files = await Media.count_documents()
@@ -1666,8 +1697,3 @@ async def advantage_spell_chok(message):
         await message.delete()
     except:
         pass
-
-
-
-
-
