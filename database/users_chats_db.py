@@ -284,6 +284,14 @@ class Database:
             else:
                 await self.users.update_one({"id": user_id}, {"$set": {"expiry_time": None}})
         return False
+
+    # नया फंक्शन: प्रीमियम यूजर चेक करने के लिए
+    async def is_premium_user(self, user_id):
+        """
+        Check if user is premium user
+        Returns True if user has premium access, False otherwise
+        """
+        return await self.has_premium_access(user_id)
     
     async def check_remaining_uasge(self, user_id):
         user_id = user_id
@@ -403,4 +411,3 @@ class Database:
                 return None
         return await self.movies_update_channel.update_one({} , {'$set': {'id': id}} , upsert=True)
 db = Database()
-
