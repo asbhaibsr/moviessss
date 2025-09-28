@@ -739,6 +739,67 @@ async def cb_handler(client: Client, query: CallbackQuery):
             chat_id = grp_id
         else:
             chat_id = query.message.chat.id
+@Client.on_callback_query(filters.regex(r"^spol"))
+async def advantage_spoll_choker(bot, query):
+    _, id, user = query.data.split('#')
+    if int(user) != 0 and query.from_user.id != int(user):
+        return await query.answer(script.ALRT_TXT, show_alert=True)
+    movie = await get_poster(id, id=True)
+    search = movie.get('title')
+    await query.answer('bhai sahab hamare pass nahin Hai')
+    files, offset, total_results = await get_search_results(search)
+    if files:
+        k = (search, files, offset, total_results)
+        await auto_filter(bot, query, k)
+    else:
+        k = await query.message.edit(script.NO_RESULT_TXT)
+        await asyncio.sleep(60)
+        await k.delete()
+        try:
+            await query.message.reply_to_message.delete()
+        except:
+            pass
+
+@Client.on_callback_query()
+async def cb_handler(client: Client, query: CallbackQuery):
+    if query.data == "close_data":
+        try:
+            user = query.message.reply_to_message.from_user.id
+        except:
+            user = query.from_user.id
+        if int(user) != 0 and query.from_user.id != int(user):
+            return await query.answer(script.ALRT_TXT, show_alert=True)
+        await query.answer("ᴛʜᴀɴᴋs ꜰᴏʀ ᴄʟᴏsᴇ ")
+        await query.message.delete()
+        try:
+            await query.message.reply_to_message.delete()
+        except:
+            pass
+    
+    elif query.data == "delallcancel":
+        userid = query.from_user.id
+        chat_type = query.message.chat.type
+        if chat_type == enums.ChatType.PRIVATE:
+            await query.message.reply_to_message.delete()
+            await query.message.delete()
+        elif chat_type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
+            grp_id = query.message.chat.id
+            st = await client.get_chat_member(grp_id, userid)
+            if (st.status == enums.ChatMemberStatus.OWNER) or (str(userid) in ADMINS):
+                await query.message.delete()
+                try:
+                    await query.message.reply_to_message.delete()
+                except:
+                    pass
+            else:
+                await query.answer(script.ALRT_TXT.format(query.from_user.first_name), show_alert=True)    
+
+    elif query.data.startswith("checksub"):
+        ident, file_id , grp_id = query.data.split("#")
+        if grp_id != 'None' and grp_id != '': # लॉजिक को थोड़ा बेहतर किया गया
+            chat_id = grp_id
+        else:
+            chat_id = query.message.chat.id
         if AUTH_CHANNEL and not await is_req_subscribed(client, query):
             await query.answer("ɪ ʟɪᴋᴇ ʏᴏᴜʀ sᴍᴀʀᴛɴᴇss ʙᴜᴛ ᴅᴏɴ'ᴛ ʙᴇ ᴏᴠᴇʀsᴍᴀʀᴛ 😒\nꜰɪʀsᴛ ᴊᴏɪɴ ᴏᴜʀ ᴜᴘᴅᴀᴛᴇs ᴄʜᴀɴɴᴇʟ 😒", show_alert=True)
             return         
@@ -766,58 +827,69 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("💸 ᴄʜᴇᴄᴋᴏᴜᴛ ᴘʀᴇᴍɪᴜᴍ ᴘʟᴀɴꜱ 💸", callback_data='seeplans')]]))
             await client.send_message(LOG_CHANNEL, text=f"#FREE_TRAIL_CLAIMED\n\n👤 ᴜꜱᴇʀ ɴᴀᴍᴇ - {query.from_user.mention}\n⚡ ᴜꜱᴇʀ ɪᴅ - {user_id}", disable_web_page_preview=True)
             return   
-	
+    
     elif query.data.startswith("stream"):
         user_id = query.from_user.id
-    
+        
+        # file_id निकालने के लिए Indentation और लॉजिक ठीक किया गया है
+        try:
+            _, file_id = query.data.split('#', 1) 
+        except ValueError:
+            return await query.answer("Invalid query data format.")
+
         has_access = await db.has_premium_access(user_id)
     
+        # अगर प्रीमियम एक्सेस नहीं है
         if not has_access:
             premium_required_message = (
-            "👑 **प्रीमियम सदस्यता आवश्यक** 👑\n\n"
-            "क्षमा करें! यह सुविधा (ऑनलाइन देखना और फ़ास्ट डाउनलोड) केवल हमारे **प्रीमियम यूज़र्स** के लिए उपलब्ध है।\n\n"
-            "🔥 **प्रीमियम लेने के लिए:**\n"
-            "आप `/plan` कमांड का उपयोग कर सकते हैं या नीचे दिए गए बटन पर क्लिक करें।"
+                "👑 **प्रीमियम सदस्यता आवश्यक** 👑\n\n"
+                "क्षमा करें! यह सुविधा (ऑनलाइन देखना और फ़ास्ट डाउनलोड) केवल हमारे **प्रीमियम यूज़र्स** के लिए उपलब्ध है।\n\n"
+                "🔥 **प्रीमियम लेने के लिए:**\n"
+                "आप `/plan` कमांड का उपयोग कर सकते हैं या नीचे दिए गए बटन पर क्लिक करें।"
             )
             
             plan_btn = [[
-            InlineKeyboardButton("✨ प्रीमियम प्लान देखें ✨", callback_data='seeplans') 
+                InlineKeyboardButton("✨ प्रीमियम प्लान देखें ✨", callback_data='seeplans') 
             ]]
             
-        await query.answer(
-            text=premium_required_message, 
-            show_alert=True
+            # पहले alert दिखाएं
+            await query.answer(
+                text="⚠️ Premium Access Required ⚠️", 
+                show_alert=True
             )
             
-            # यहाँ, संदेश को टेक्स्ट और बटन दोनों के साथ एडिट करें।
-    try:
-        await query.message.edit_text(
-            text=premium_required_message, # नए टेक्स्ट के साथ संदेश अपडेट करें
-            reply_markup=InlineKeyboardMarkup(plan_btn),
-            parse_mode=enums.ParseMode.MARKDOWN # यदि आप बोल्ड/इमोजी का उपयोग कर रहे हैं तो इसे पार्स करें
+            # फिर मैसेज को एडिट करें और return कर दें
+            try:
+                await query.message.edit_text(
+                    text=premium_required_message, 
+                    reply_markup=InlineKeyboardMarkup(plan_btn),
+                    parse_mode=enums.ParseMode.MARKDOWN 
                 )
-    except Exception as e:
-                # त्रुटि लॉग करें यदि संदेश एडिट नहीं हो पाता है।
+            except Exception as e:
                 print(f"Error editing message for non-premium user: {e}")
-            
-    return # अब `return` यहाँ ठीक है, क्योंकि संदेश अपडेट हो चुका है।
+                
+            return # non-premium user के लिए यहीं रुकें
 
-        # अगर प्रीमियम एक्सेस है (has_access = True), तो लिंक जनरेट करें
-            file_id = query.data.split('#', 1)[1]
-            log_msg = await client.send_cached_media(
+        # अगर प्रीमियम एक्सेस है (has_access = True)
+        # यहाँ से आपका IndentationError वाला कोड ब्लॉक शुरू हो रहा था। अब यह ठीक है।
+        log_msg = await client.send_cached_media(
             chat_id=LOG_CHANNEL,
             file_id=file_id
         )
-            fileName = quote_plus(get_name(log_msg))
-            online = f"{URL}watch/{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
-            download = f"{URL}{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
-            btn = [[
+        
+        fileName = quote_plus(get_name(log_msg))
+        online = f"{URL}watch/{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
+        download = f"{URL}{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
+        
+        btn = [[
             InlineKeyboardButton("ᴡᴀᴛᴄʜ ᴏɴʟɪɴᴇ", url=online),
             InlineKeyboardButton("ꜰᴀsᴛ ᴅᴏᴡɴʟᴏᴀᴅ", url=download)
         ],[
             InlineKeyboardButton('❌ ᴄʟᴏsᴇ ❌', callback_data='close_data')
         ]]
-        await query.edit_message_reply_markup(
+        
+        # reply_markup को एडिट करें
+        await query.message.edit_reply_markup(
             reply_markup=InlineKeyboardMarkup(btn)
         )
             username = query.from_user.username
@@ -1694,6 +1766,7 @@ async def advantage_spell_chok(message):
         await message.delete()
     except:
         pass
+
 
 
 
