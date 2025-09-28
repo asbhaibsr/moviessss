@@ -769,11 +769,17 @@ async def cb_handler(client: Client, query: CallbackQuery):
 	
     elif query.data.startswith("stream"):
         user_id = query.from_user.id
-        file_id = query.data.split('#', 1)[1]
-        log_msg = await client.send_cached_media(
+    
+    # Premium check - yahan add karen
+    if not await db.has_premium_access(user_id):
+        await query.answer("🚫 Premium Required!\n\nAap ye subhiya ka upyog nahi kar sakte. Premium lene ke liye /plan command ka use karen.", show_alert=True)
+        return
+    
+    	file_id = query.data.split('#', 1)[1]
+    	log_msg = await client.send_cached_media(
         chat_id=LOG_CHANNEL,
         file_id=file_id
-        )
+    )
         fileName = quote_plus(get_name(log_msg))
         online = f"{URL}watch/{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
         download = f"{URL}{log_msg.id}/{fileName}?hash={get_hash(log_msg)}"
@@ -1660,3 +1666,4 @@ async def advantage_spell_chok(message):
         await message.delete()
     except:
         pass
+
