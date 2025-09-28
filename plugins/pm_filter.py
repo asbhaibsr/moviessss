@@ -804,8 +804,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
             ]
         ])
     )
-	
-    elif query.data == "buttons":
+	elif query.data == "buttons":
         await query.answer("ɴᴏ ᴍᴏʀᴇ ᴘᴀɢᴇs 😊", show_alert=True)
 
     elif query.data == "pages":
@@ -1666,6 +1665,7 @@ async def advantage_spell_chok(message):
         await message.delete()
     except:
         pass
+
 
 
 
