@@ -796,7 +796,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
             reply_markup=InlineKeyboardMarkup(plan_btn),
             parse_mode=enums.ParseMode.MARKDOWN # यदि आप बोल्ड/इमोजी का उपयोग कर रहे हैं तो इसे पार्स करें
                 )
-            except Exception as e:
+    except Exception as e:
                 # त्रुटि लॉग करें यदि संदेश एडिट नहीं हो पाता है।
                 print(f"Error editing message for non-premium user: {e}")
             
@@ -1694,6 +1694,7 @@ async def advantage_spell_chok(message):
         await message.delete()
     except:
         pass
+
 
 
 
