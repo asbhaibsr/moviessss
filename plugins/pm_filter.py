@@ -892,7 +892,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         await query.message.edit_reply_markup(
             reply_markup=InlineKeyboardMarkup(btn)
         )
-            username = query.from_user.username
+		username = query.from_user.username
         await log_msg.reply_text(
             text=f"#LinkGenrated\n\nIᴅ : <code>{user_id}</code>\nUꜱᴇʀɴᴀᴍᴇ : {username}\n\nNᴀᴍᴇ : {fileName}",
             quote=True,
@@ -1766,6 +1766,7 @@ async def advantage_spell_chok(message):
         await message.delete()
     except:
         pass
+
 
 
 
