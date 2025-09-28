@@ -800,7 +800,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 # त्रुटि लॉग करें यदि संदेश एडिट नहीं हो पाता है।
                 print(f"Error editing message for non-premium user: {e}")
             
-        return # अब `return` यहाँ ठीक है, क्योंकि संदेश अपडेट हो चुका है।
+    return # अब `return` यहाँ ठीक है, क्योंकि संदेश अपडेट हो चुका है।
 
         # अगर प्रीमियम एक्सेस है (has_access = True), तो लिंक जनरेट करें
             file_id = query.data.split('#', 1)[1]
@@ -1694,6 +1694,7 @@ async def advantage_spell_chok(message):
         await message.delete()
     except:
         pass
+
 
 
 
