@@ -48,12 +48,12 @@ TUTORIAL = environ.get("TUTORIAL", "https://t.me/Asbhai_bsr/504")
 VERIFY_IMG = environ.get("VERIFY_IMG", "https://envs.sh/GuT.jpg")
 SHORTENER_API = environ.get("SHORTENER_API", "4ca8f20ebd8b02f6fe1f55eb1e49136f69e2f5a0")
 SHORTENER_WEBSITE = environ.get("SHORTENER_WEBSITE", 'dashboard.smallshorts.com')
-SHORTENER_API2 = environ.get("SHORTENER_API2", "0")
-SHORTENER_WEBSITE2 = environ.get("SHORTENER_WEBSITE2", '0')
-SHORTENER_API3 = environ.get("SHORTENER_API3", "0")
-SHORTENER_WEBSITE3 = environ.get("SHORTENER_WEBSITE3", '0')
-TWO_VERIFY_GAP = int(environ.get('TWO_VERIFY_GAP', "8000"))
-THREE_VERIFY_GAP = int(environ.get('THREE_VERIFY_GAP', "8000"))
+SHORTENER_API2 = environ.get("SHORTENER_API2", "3e053189c26ffbc17fec79a7e456beffdebb4314")
+SHORTENER_WEBSITE2 = environ.get("SHORTENER_WEBSITE2", 'shortxlinks.com')
+SHORTENER_API3 = environ.get("SHORTENER_API3", "3e053189c26ffbc17fec79a7e456beffdebb4314")
+SHORTENER_WEBSITE3 = environ.get("SHORTENER_WEBSITE3", 'shortxlinks.com')
+TWO_VERIFY_GAP = int(environ.get('TWO_VERIFY_GAP', "20000"))
+THREE_VERIFY_GAP = int(environ.get('THREE_VERIFY_GAP', "20000"))
 #---------------------------------------------------------------
 #---------------------------------------------------------------
 LANGUAGES = ["hindi", "english", "telugu", "tamil", "kannada", "malayalam", "bengali", "marathi", "gujarati", "punjabi"]
